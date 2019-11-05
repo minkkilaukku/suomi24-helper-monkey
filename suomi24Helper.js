@@ -12,11 +12,11 @@
 
 (function() {
     'use strict';
-    console.log("hello rom suomi24 helper!");
+    //console.log("hello from suomi24 helper!");
     window.addEventListener('load', ()=>{
         /** Get a date from a comment user info container */
         let timeMaker = container => {
-            let tEl = container.querySelector(".ThreadUser__Timestamp-sugcdk-1");
+            let tEl = container.querySelector("time"); //".ThreadUser__Timestamp-sugcdk-1");
             if (!tEl) return new Date(0);
             let tStr = tEl.innerText.trim().toLocaleLowerCase();
             let year, month, day, hour, minute;
@@ -41,7 +41,7 @@
         };
         /** Array of all user info containers sorted by timestamp */
         let getAllUserInfos = () => {
-            let ret = Array.from(document.querySelectorAll(".CommentListItem__UserInfo-sc-515cm8-1"));
+            let ret = Array.from(document.querySelectorAll("section ul li")).filter(el=>(/ThreadComment/i).test(el.classList.toString())); //Array.from(document.querySelectorAll(".CommentListItem__UserInfo-sc-515cm8-1"));
             ret.forEach(c=>{c.dateForSorting = timeMaker(c);});
             ret.sort((a,b)=>+a.dateForSorting-b.dateForSorting);
             //console.log("Got user infos:", ret.map(c=>c.innerText));
@@ -52,7 +52,7 @@
             var perBarHtml = "<progress class='percentBar' max='100' value='"+percent+"'></progress>";
             postIndexInfo.innerHTML = ("<span class='percentBarHolder'>"+perBarHtml+"<p class='textPercentInside'>"+Math.round(percent)+"%</p></span> Aktiivi viesti "+postNumber+"/"+totalPosts);
             postIndexInfo.style.display = "block";
-            postContainer.insertAdjacentElement("afterend", postIndexInfo);
+            postContainer.insertAdjacentElement("afterbegin", postIndexInfo);
         };
         /**
 * scroll the page to the @postIndex'th user info container, ordering by timestamp
@@ -102,7 +102,7 @@
                     //console.log("All jutut: ", getAllUserInfos().map(c=>c.dateForSorting));
                 };
                 var keyListener = function(event) {
-                    console.log("key down", event.keyCode);
+                    //console.log("key down", event.keyCode);
                     if (checkKeyCodeFunc(ob.prevKeyCode, event)) {
                         onKeyDownFunc(-1, event);
                     } else if (checkKeyCodeFunc(ob.nextKeyCode, event)) {
@@ -110,7 +110,6 @@
                     }
                 };
                 document.body.addEventListener("keydown", keyListener);
-                console.log("added keydown listener");
             }
         };
         let postIndexInfo, postIndexInput;
@@ -145,7 +144,7 @@
         postIndexInfo.addEventListener("click", postIndexClickHandler);
         // set keyboard control of finding most recent posts
         setKeyboardFindMsgListener();
-        let readMoreButt = document.querySelector("button.ThreadBody__ReadMoreButton-sc-1mjl49q-2.bzkVHZ");
+        let readMoreButt = document.querySelectorAll("main article p")[0]; //document.querySelector("button.ThreadBody__ReadMoreButton-sc-1mjl49q-2.bzkVHZ");
         if (readMoreButt) {
             //console.log("Clicking read more", readMoreButt);
             readMoreButt.click();
